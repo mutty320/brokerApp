@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Costumer List</title>
+  </head>
+  <body>
+    <ul>
+      <% clientArr.map((client, index) => { %>
+       
+        <li>
+          <% if (client.f_name && client.l_name) { %>
+            <%= client.f_name %> <%= client.l_name %>
+           <br> id = <%= client.id %>
+          <% } else if (client.f_name) { %>
+            <%= client.f_name %>
+            <br> id = <%= client.id %>
+          <% } else if (client.l_name) { %>
+            <%= client.l_name %>
+            <br> id = <%= c.id %>
+          <% } else { %>
+            <%= client.id %>
+          <% } %>
+        </li>
+        <div>
+        
+          <form action="/sendEmail" method="post">
+            <input type="submit" value="Send An Email To <%= client.f_name %> <%= client.l_name %>"></input><br>
+            
+             <input type="hidden" name="recipient" value="<%= client.email %>">
+             <input type="hidden" name="f_name" value="<%= client.f_name %>">
+             <input type="hidden" name="l_name" value="<%= client.l_name %>">
+
+           </form>
+            
+        </div>
+      <% }) %>
+    </ul>
+  </body>
+</html>
