@@ -17,7 +17,6 @@ clientRouter.route("/").post((req, res) => {
   mongoose.connect(mongoUrl)
   //const db = mongoose.connection
 
-  //const dbName = "brokerapp";
     user.save().then(user => {
     res.status(200).json(user);
 
@@ -26,21 +25,6 @@ clientRouter.route("/").post((req, res) => {
     return res.status(400).json(err)
   })
 
-  // (async function mongoConnect() {
-  //   let connection;
-  //   try {
-  //     connection = await MongoClient.connect(mongoUrl);
-  //     debug("Connected to mongo DB");
-
-  //     const db = connection.db(dbName);
-  //     const response = await db.collection("clients").insertOne(user);
-  //     res.json(user);
-  //     //res.render("clients", { user });
-  //   } catch (error) {
-  //     debug(error.stack);
-  //   }
-  //   connection.close();
-// })();
 });
 
 module.exports = clientRouter;
