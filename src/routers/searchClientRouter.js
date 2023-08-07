@@ -2,6 +2,8 @@ const express = require("express");
 
 const debug = require("debug")("app:sessionRouter");
 const { MongoClient, ObjectId } = require("mongodb");
+const User = require("../../models/userModel");
+const mongoose = require("mongoose");
 
 const searchClientRouter = express.Router();
 
@@ -10,57 +12,44 @@ const searchClientRouter = express.Router();
 //=====================================================
 searchClientRouter.route("/").get((req, res) => {
   const mongoUrl =
-    "mongodb+srv://mutty320:OC4pKMTds43unWOv@brokerapp.0zryq57.mongodb.net/?retryWrites=true&w=majority";
+    "mongodb+srv://mutty320:OC4pKMTds43unWOv@brokerapp.0zryq57.mongodb.net/brokerapp?retryWrites=true&w=majority";
+  mongoose.connect(mongoUrl);
+  const db = mongoose.connection;
 
-  const dbName = "brokerapp";
+  let client = {};
 
-  (async function mongoConnect() {
-    let connection;
-    let client;
-    try {
-      connection = await MongoClient.connect(mongoUrl);
-      debug("Connected to mongo DB");
+  if (req.query.f_name_search && req.query.l_name_search) {
+    client = {
+      f_name: req.query.f_name_search,
+      l_name: req.query.l_name_search,
+    };
+  } else if (req.query.f_name_search) {
+    client = { f_name: req.query.f_name_search };
+  } else if (req.query.l_name_search) {
+    client = { l_name: req.query.l_name_search };
+  } else if (req.query.id_search) {
+    client = { _id: req.query.id_search};  //
+  }
+  console.log(JSON.stringify(client, null, 2) + "hi fucker");
 
-      const db = connection.db(dbName);
+  db.on("error", console.error.bind(console, "Connection error:"));
+  db.once("open", () => {
+    console.log("Connected to the database.");
+    // Your query code here
+    User.find(client)
+      .then((clientArr) => {
+        if (clientArr.length > 0) {
+          res.render("clientInfo", { clientArr });
+        } else {
+          res.send("Client not found");
+        }
+      })
+      .catch((err) => {
+        debug(err);
+        //res.render('error_template', { error: err }); // Render an error template if something goes wrong
+      });
+  });
 
-      if (req.query.f_name_search && req.query.l_name_search) {
-        client = await db
-          .collection("clients")
-          .find({
-            f_name: req.query.f_name_search,
-            l_name: req.query.l_name_search,
-          })
-          .toArray();
-      }else if (req.query.f_name_search) {
-        client = await db
-          .collection("clients")
-          .find({ f_name: req.query.f_name_search }).toArray();
-        
-      }else if (req.query.l_name_search) {
-        client = await db
-          .collection("clients")
-          .find({ l_name: req.query.l_name_search }).toArray();
-        
-       } else {
-        client = await db
-          .collection("clients")
-          .findOne({ id: req.query.id_search });
-      }
-      if (client) {
-        //console.log(client);
-        const clientArr = Array.isArray(client) ? client : [client];
-        res.render("clientInfo", { clientArr });
-      } else {
-        res.send("Client not found");
-      }
-    } catch (error) {
-      debug(error.stack);
-    }
-    if (connection) {
-      connection.close();
-    }
-    // await connection.close();
-  })();
 });
 
 // authRouter

@@ -14,6 +14,7 @@ const userSchema = new Schema(
         date_of_birth: { type: Date },
         date_of_join: { type: Date, default: Date.now()}, //add aoutomaticly
         //date_of_leave: { type: Date },
+        password: { type: Number }
     }
 )
 
