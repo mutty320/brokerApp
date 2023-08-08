@@ -1,39 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-
-        <form action="/addClient" method="post">
-        <input type="submit" value="Add New Client"></input><br>
-        Name <input type="text" name="f_name" id="f_name"/><br>
-        Last name <input type="text" name="l_name" id="l_name"><br>
-        Email <input type="text" name="email" id="email"><br>
-        Phone Number <input type="text" name="number" id="number"><br>
-        Id <input type="text" name="id" id="id"><br>
-        Country <input type="text" name="country" id="country"><br>
-        City <input type="text" name="city" id="city"><br>
-        Date Of Birth <input type="text" name="date_of_birth" id="date_of_birth"><br>
-    </form>
+      <form action="/clientsignIn" method="POST">
+        <button type="submit" name="userType" value="Client">Client</button
+        ><br />
+      </form>
+      <form action="/brokerSignIn" method="POST">
+        <button type="submit" name="userType" value="Broker">Broker</button
+        ><br />
+      </form>
     </div>
-   <br>
-   <br>
-    <div>
-       <form action="/serchClient" method="get">
-        <input type="submit" value=" Search By id"></input><br>
-        search by id   <input type="text" name="id_search"  id="id_search" /><br>
-       </form>
-       <form action="/serchClient" method="get">
-        <input type="submit" value=" Search By Name"></input><br>
-        search by name <br>
-         enter first name<input type="text" name="f_name_search"   id="f_name_search" /><br>
-         enter last name <input type="text" name="l_name_search"   id="l_name_search" /><br>
-       </form>
-       
-    </div>
-</body>
+    <br />
+    <br />
+  </body>
 </html>

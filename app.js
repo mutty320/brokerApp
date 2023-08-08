@@ -20,7 +20,7 @@ const searchClientRouter = require("./src/routers/searchClientRouter");
 const sendEmailRouter =    require("./src/routers/sendEmailRouter")
                                             
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(morgan("tiny"));
@@ -33,10 +33,18 @@ app.use(express.urlencoded({ extended: false}))
 app.set("views", "./src/views")
 app.set("view engine", "ejs")
 
-app.get('/',(req, res) => {
-    res.render("signIn")
+// app.get('/',(req, res) => {
+//     res.render("index")
+// })
+app.get('/api',(req, res) => {
+    res.json({"users": [1, 2, 3, 4]})
 })
-
+// app.post('/clientsignIn',(req, res) => {
+//     res.render("clientsignIn")
+// })
+// app.post('/brokerSignIn',(req, res) => {
+//     res.render("brokerSignIn")
+// })
 
 app.use("/addClient", addClientRouter);
 app.use("/serchClient", searchClientRouter);
